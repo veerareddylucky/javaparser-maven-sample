@@ -1,0 +1,58 @@
+pipeline
+{
+    agent any
+    
+    
+    stages
+    {
+        stage('Continuous Download')
+        {
+            steps
+            {
+                git credentialsId: 'cb1bee3b-6081-44d1-ac1b-25378daa768e', url: 'https://github.com/veerareddylucky/javaparser-maven-sample.git'
+            }
+            
+        }
+        stage('Countiunous Built')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+        stage('Archive Artifacts')
+        {
+            steps
+            {
+                archiveArtifacts artifacts: '**/*.jar', followSymlinks: false
+            }
+        }
+        stage('Docker build')
+        {
+            steps
+            {
+                sh 'docker build -t smp .'
+                sh 'docker image list'
+                sh ' docker tag smp veerareddyt/java:1.0'
+            }
+        }
+        stage('Docker login')
+        {
+            steps
+            {
+                withCredentials([string(credentialsId: 'docker_p', variable: 'dockerhubpassword')]) {
+                sh "docker login -u veerareddyt -p $dockerhubpassword"
+                }
+                
+            }
+        }
+        stage('docker push')
+        {
+            steps
+            {
+               sh 'docker push veerareddyt/java:1.0'
+            }
+        }
+    }
+}    
+    

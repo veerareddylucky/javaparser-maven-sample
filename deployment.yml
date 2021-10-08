@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jmapp-deployment
+  labels:
+     app: jmapp
+    spec:
+  template:
+     metadata:
+       name: jmapp-pod
+       labels: 
+         app: jmapp
+       
+     spec:
+         containers:
+           - name: jmapp-erp
+             image: "veerareddyt/java:1.0"
+  replicas: 1
+  selector:
+    matchLabels:
+     
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jm-service
+spec:
+  selector:
+    app:jmapp
+  type: LoadBalancer  
+  ports:
+    - protocol: TCP
+      targetPort: 3000
+      port: 80
+      nodePort: 30000
