@@ -29,9 +29,9 @@ metadata:
 spec:
   selector:
     app: jmapp
-  type: LoadBalancer  
+  type: NodePort  
   ports:
     - protocol: TCP
       targetPort: 3000
-      port: 83
-      nodePort: 30000
+      port: 3000
+      
