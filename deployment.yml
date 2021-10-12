@@ -3,21 +3,23 @@ kind: Deployment
 metadata:
   name: jmapp-deployment
   labels:
-     app: jmapp
-    spec:
-  template:
-     metadata:
-       name: jmapp-pod
-       labels: 
-         app: jmapp
-       
-     spec:
-         containers:
-           - name: jmapp-erp
-             image: "veerareddyt/java:1.0"
+    app: jmapp
+spec:
   replicas: 1
   selector:
-    matchLabels:
+    matchLabels: 
+      app: jmapp
+  template:
+    metadata:
+      name: jmapp-pod
+      labels: 
+        app: jmapp
+       
+    spec:
+        containers:
+         - name: jmapp-erp
+           image: "veerareddyt/java:1.0"
+ 
      
 ---
 apiVersion: v1
@@ -26,7 +28,7 @@ metadata:
   name: jm-service
 spec:
   selector:
-    app:jmapp
+    app: jmapp
   type: LoadBalancer  
   ports:
     - protocol: TCP
